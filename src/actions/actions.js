@@ -21,10 +21,10 @@ export function removeBook (book) {
   }
 }
 
-export function nextPurchase(name){
+export function nextPurchase(book) {
   return{
     type: CHANGE_NEXT_PURCHASE,
-    name
+    book
   }
 }
 

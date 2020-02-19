@@ -2,8 +2,11 @@ import { CHANGE_NEXT_PURCHASE, ADD_BOOK, REMOVE_BOOK, MODIFY_BOOK } from '../act
 import uuidV4 from 'uuid/v4'
 
 const initialState = {
-    books: [{ name: 'East of Eden', author: 'John Steinbeck', id: uuidV4() }],
-    nextBook: 'Prueba'
+    books: [
+        { name: 'East of Eden', author: 'John Steinbeck', id: uuidV4() },
+        { name: 'East of Eden2', author: 'John Steinbeck', id: uuidV4() },
+        { name: 'East of Eden3', author: 'John Steinbeck', id: uuidV4() }
+    ]
 }
 
 const nextPurchaseReducer = (state = initialState, action) =>{
@@ -25,7 +28,7 @@ const nextPurchaseReducer = (state = initialState, action) =>{
         }
         case CHANGE_NEXT_PURCHASE:
             return {
-                nextBook: action.book
+                books: state.books[index]
             }
         case MODIFY_BOOK:        
             return {

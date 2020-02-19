@@ -7,14 +7,24 @@ import {
   TextInput, 
   TouchableOpacity
 } from 'react-native'
+import { CartReducers } from 'react-cart-components'
+
 import { addBook, removeBook, nextPurchase, modifyBook } from '../actions'
 
 import { connect } from 'react-redux'
+import { createStore, combineReducers } from 'redux'
+import { Cart, AddCartButton } from 'react-cart-components'
 
 const initialState = {
   name: '',
   author: ''
 }
+
+const store = createStore(
+  combineReducers({
+    cart: CartReducers
+  })
+)
 
 class Books extends React.Component {
   state = initialState
@@ -35,16 +45,17 @@ class Books extends React.Component {
     this.props.dispatchRemoveBook(book)
   }
   
-  nextPurchase = (name) => {
-      this.props.dispatchNextPurchase(name)
+  nextPurchase = (book) => {
+      this.props.dispatchNextPurchase(book)
   }
 
   render() {
-    const { books, nextBook } = this.props
+    const { books } = this.props
 
-    return (
+    return (      
       <View style={styles.container}>
         <Text style={styles.title}>Books</Text>
+        <Cart currency="USD" />
         <ScrollView
           keyboardShouldPersistTaps='always'
           style={styles.booksContainer}
@@ -55,7 +66,7 @@ class Books extends React.Component {
                 <Text style={styles.name}>{book.name}</Text>
                 <Text style={styles.author}>{book.author}</Text>
                 <Text onPress={() => this.removeBook(book)}>Remove</Text>
-                <Text onPress={() => this.nextPurchase(book.name)}>Comprar</Text>
+                <Text onPress={() => this.nextPurchase(book)}>Comprar</Text>
               </View>
             ))
           }
@@ -150,12 +161,11 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = {
   dispatchAddBook: (book) => addBook(book),
   dispatchRemoveBook: (book) => removeBook(book),
-  dispatchNextPurchase: (name) => nextPurchase(name),
+  dispatchNextPurchase: (book) => nextPurchase(book)
 }
 
 const mapStateToProps = (state) => ({
-  books: state.nextPurchaseReducer.books,
-  nextBook: state.nextPurchaseReducer.nextBook
+  books: state.nextPurchaseReducer.books
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Books)
